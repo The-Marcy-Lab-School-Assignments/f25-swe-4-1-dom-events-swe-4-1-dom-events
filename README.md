@@ -71,7 +71,7 @@ Short response questions can be found in the `src/short-response.md` file. Write
 
 ## Coding Part 1: Counter From Scratch
 
-In the `1-counter-from-scratch/` folder, build a Counter app from scratch.
+Create a folder called `1-counter-from-scratch/` and, inside, build a Counter app from scratch.
 
 ![A simple counter app.](./counter-screenshot.png)
 
