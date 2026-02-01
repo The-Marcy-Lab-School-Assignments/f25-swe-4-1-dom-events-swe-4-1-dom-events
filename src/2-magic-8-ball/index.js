@@ -29,3 +29,21 @@ TODO:
   - [ ] generates a random fortune from the fortunes array
   - [ ] shows the fortune in the answer element
 */
+
+const numberEight = document.getElementById('eight');
+const askButton = document.getElementById('ask-btn');
+const yourFortune = document.getElementById('answer');
+
+
+askButton.addEventListener('click', () => {
+  //Hide number eight
+  numberEight.style.display = 'none';
+
+  //Use Math.floor and Math.random to get a random index we can use to get the fortune.
+  const fortune = fortunes[Math.floor(Math.random() * fortunes.length)];
+
+  //Use textContent to display the fortune
+  //And style.display = 'block' to get the sentences multiple lines
+  yourFortune.textContent = fortune;
+  yourFortune.style.display = 'block';
+}) 
