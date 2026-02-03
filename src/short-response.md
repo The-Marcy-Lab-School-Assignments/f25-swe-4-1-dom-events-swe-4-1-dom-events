@@ -37,6 +37,13 @@ But an error is thrown.
 
 **Your Answer:**
 
+1. `Uncaught TypeError: Cannot read properties of null (reading 'style')` This tells us that `document.querySelector("#my-button")` returned `null`.
+
+2. Because when JavaScript runs. The `<script src="index.js"></script>` is placed inside the `<head>`. The browser executes JavaScript top to bottom
+   when index.js runs, the browser has not created the `<button>` yet.
+
+3. Move the `<script>` to the bottom of the body.
+
 ## Question 2: event.target vs event.currentTarget
 
 Consider this HTML:
@@ -60,6 +67,30 @@ div.addEventListener("click", (event) => {
 When a user clicks the button, both `event.target` and `event.currentTarget` are logged. Explain what each property represents in this scenario and why they might be different.
 
 **Your Answer:**
+
+### `event.target`
+
+Is the element that was actually clicked.
+
+```js
+event.target === <button>Click Me</button>;
+```
+
+Because the user physically clicked the button, not the div.
+
+### `event.currentTarget`
+
+Is the element that the event listener is attached to.
+
+```js
+event.currentTarget === <div id="button-container">
+```
+
+Because the listener was added to the div.
+
+`event.target` = where the event started.
+
+`event.currentTarget` = where the event is being handled.
 
 ## Question 3: Creating Elements Dynamically
 
@@ -94,7 +125,8 @@ document.body.append(productCard);
 
 However, when the page loads and the code is executed, the user isn't able to see the image, product name or product price. What is the issue with this code?
 
-**Your Answer:**
+**Your Answer:** Creating elements does not put them on the page.
+Elements **must be appended** to the DOM, and child elements **must be appended** to their parent. Here we are appending productCard to the body but not appending any child elements to the product card so the product card is empty.
 
 ## Question 4: Event Delegation and event.target.closest()
 
@@ -152,6 +184,38 @@ Which would require **more** code, breaks if new items are added dynamically
 and is harder to maintain.
 
 **Event delegation** is better because it automatically handles dynamically added elements on top of keeping your code **cleaner** and more **efficient**.
+
+### What closest('li') does:
+
+Is starting from the clicked element, walk up the DOM tree until you find the nearest `<li>` ancestor.”
+
+So if you click:
+
+1. On the checkmark `<p>` → it finds the `<li>`
+
+2. On the description `<p>` → it finds the `<li>`
+
+3. On the `<li>` itself → it returns that `<li>`
+
+If it can’t find one, it returns `null`.
+
+### Why this is essential for event delegation it's because event delegation only works if you can:
+
+- Catch the event at the parent.
+
+- Identify which child item should respond.
+
+`closest('li')` solves this problem by:
+
+- Normalizing all clicks to the same element type `<li>`
+
+- Letting your logic work regardless of where inside the `<li>` the user clicked
+
+Without `closest()`:
+
+You’d have to write logic checking tag names or classes;
+
+Your code would break when HTML structure changes.
 
 ## Question 5: NodeList
 
