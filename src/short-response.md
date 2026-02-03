@@ -26,7 +26,7 @@ Examine the HTML code below:
 In the `index.js` file, they have the code:
 
 ```js
-document.querySelector('#my-button').style.color = 'red';
+document.querySelector("#my-button").style.color = "red";
 ```
 
 But an error is thrown.
@@ -42,7 +42,7 @@ But an error is thrown.
 Consider this HTML:
 
 ```html
-<div id='button-container'>
+<div id="button-container">
   <button>Click Me</button>
 </div>
 ```
@@ -50,8 +50,8 @@ Consider this HTML:
 And this JavaScript:
 
 ```js
-const div = document.querySelector('#button-container');
-div.addEventListener('click', (event) => {
+const div = document.querySelector("#button-container");
+div.addEventListener("click", (event) => {
   console.log(event.target);
   console.log(event.currentTarget);
 });
@@ -67,10 +67,10 @@ Look at the JavaScript code below that is attempting to create a product card dy
 
 ```js
 const product = {
-  name: 'iPhone 17',
+  name: "iPhone 17",
   price: 1099.99,
-  img: './images/iphone17.png'
-}
+  img: "./images/iphone17.png",
+};
 
 /* Desired structure: 
 <div>
@@ -80,10 +80,10 @@ const product = {
 </div>
 */
 
-const productCard = document.createElement('div');
-const productImage = document.createElement('img');
-const productName = document.createElement('h3');
-const productPrice = document.createElement('p');
+const productCard = document.createElement("div");
+const productImage = document.createElement("img");
+const productName = document.createElement("h3");
+const productPrice = document.createElement("p");
 
 productImage.src = product.img;
 productName.textContent = product.name;
@@ -96,7 +96,6 @@ However, when the page loads and the code is executed, the user isn't able to se
 
 **Your Answer:**
 
-
 ## Question 4: Event Delegation and event.target.closest()
 
 Consider this HTML:
@@ -104,16 +103,16 @@ Consider this HTML:
 ```html
 <ul id="todo-list">
   <li id="todo-1">
-    <p class='description'>Walk the dog</p>
-    <p class='is-complete'>✅</p>
+    <p class="description">Walk the dog</p>
+    <p class="is-complete">✅</p>
   </li>
   <li id="todo-2">
-    <p class='description'>Take out the trash</p>
-    <p class='is-complete'>❌</p>
+    <p class="description">Take out the trash</p>
+    <p class="is-complete">❌</p>
   </li>
   <li id="todo-3">
-    <p class='description'>Wash the dishes</p>
-    <p class='is-complete'>❌</p>
+    <p class="description">Wash the dishes</p>
+    <p class="is-complete">❌</p>
   </li>
 </ul>
 ```
@@ -121,20 +120,38 @@ Consider this HTML:
 And this JavaScript:
 
 ```js
-const todoList = document.querySelector('#todo-list');
-todoList.addEventListener('click', (event) => {
-  const clickedLi = event.target.closest('li');
+const todoList = document.querySelector("#todo-list");
+todoList.addEventListener("click", (event) => {
+  const clickedLi = event.target.closest("li");
 
   if (!clickedLi) return;
 
-  clickedLi.querySelector('.is-complete').textContent = "✅";
+  clickedLi.querySelector(".is-complete").textContent = "✅";
 });
 ```
 
 1. What is the name for this approach to event handling? What is the alternative and why is this approach better?
 2. Explain what the `event.target.closest('li')` method does and why it is essential to this approach.
 
-**Your Answer:**
+**Your Answer:** The approach used here is **event delegation**
+
+Event delegation means:
+
+- You attach **one** event listener to a parent element.
+
+- You let events “bubble up” from child elements.
+
+- You figure out which child was clicked inside the handler.
+
+The click listener is on #todo-list the `<ul>` but clicks actually happen on `<p>` elements inside `<li>` elements. The parent listens once and handles all of them.
+
+The alternative would be something like Selecting every `<li>` or every `<p>`
+adding a separate addEventListener to each one.
+
+Which would require **more** code, breaks if new items are added dynamically
+and is harder to maintain.
+
+**Event delegation** is better because it automatically handles dynamically added elements on top of keeping your code **cleaner** and more **efficient**.
 
 ## Question 5: NodeList
 
@@ -144,3 +161,11 @@ Do some independent learning and reading about the `querySelectorAll()` method. 
 2. What is the difference between a `NodeList` and an array? Why is it important to know this difference?
 
 **Your Answer:**
+`querySelector()` returns only the **first** element that matches a CSS selector.
+`querySelectorAll()` returns **all** matching elements as a collection called a `NodeList`.
+
+You would use `querySelectorAll()` when you want to apply the **same behavior** or styles to **multiple elements**, like adding a click event to every button.
+
+A `NodeList` is array-like, but it is not a true array. It supports some methods like forEach, but it does not have all array methods such as map, filter, or reduce.
+
+This difference matters because if you try to use array methods on a `NodeList`, your code can break. When you need full array functionality, you must convert the `NodeList` into an array.
