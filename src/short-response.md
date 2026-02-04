@@ -36,6 +36,7 @@ But an error is thrown.
 3. What can be done to fix it?
 
 **Your Answer:**
+This code will throw a type error since `document.querySelector('#my-button').style` will not be properly defined. This error occurs because the script is linked at the top of the html page and since the code runs from top to bottom the entire `index.js` code will run before the program even recognizes the content inside of the html body which makes everything referencing the html a null value. The code is basically reading `document.null.style` at that point. To fix it all you have to do is put the script tag at the bottom of the body so the program recognizes the html objects before running the `index.js` code.
 
 ## Question 2: event.target vs event.currentTarget
 

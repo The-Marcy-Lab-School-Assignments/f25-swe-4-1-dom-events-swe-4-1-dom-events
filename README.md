@@ -136,7 +136,7 @@ First, get oriented:
 
 Your task is to use JavaScript and the DOM to dynamically create the playlist cards and add interactivity such that when you click on a playlist, it will be marked as "selected" and will be shown as "now playing".
 
-- [ ] In `index.js`, for each playlist in the given `playlists` array, create a list item with the playlist title and image:
+- [] In `index.js`, for each playlist in the given `playlists` array, create a list item with the playlist title and image:
     ```html
     <li class="playlist-card" data-title="Chill Vibes">
       <img src="./img/playlist-chill.jpg"  alt="Chill Vibes playlist cover" />
