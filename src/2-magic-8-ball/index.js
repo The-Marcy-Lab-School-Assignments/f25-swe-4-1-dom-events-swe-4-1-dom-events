@@ -22,14 +22,6 @@ const fortunes = [
   "Very doubtful",
 ];
 
-/* 
-TODO:
-- [x] Add an event listener to the ask button that:
-  - [x] hides the eight ball (hint: adjust the style.display property)
-  - [x] generates a random fortune from the fortunes array
-  - [ ] shows the fortune in the answer element
-*/
-
 const ball = document.querySelector("#eight");
 const button = document.querySelector("#ask-btn");
 const answer = document.querySelector("#answer")
@@ -39,7 +31,7 @@ button.addEventListener("click", (event) => {
   ball.style.display = "none"
   answer.style.display = "block"
 
-  let chosenFortune = Math.round(Math.random() * fortunes.length)
-  answer.innerHTML = chosenFortune
+  let chosenFortune = Math.floor(Math.random() * fortunes.length)
+  answer.textContent = fortunes[chosenFortune]
 
 });

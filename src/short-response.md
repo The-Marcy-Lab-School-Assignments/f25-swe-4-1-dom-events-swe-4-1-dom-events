@@ -26,7 +26,7 @@ Examine the HTML code below:
 In the `index.js` file, they have the code:
 
 ```js
-document.querySelector('#my-button').style.color = 'red';
+document.querySelector("#my-button").style.color = "red";
 ```
 
 But an error is thrown.
@@ -43,7 +43,7 @@ This code will throw a type error since `document.querySelector('#my-button').st
 Consider this HTML:
 
 ```html
-<div id='button-container'>
+<div id="button-container">
   <button>Click Me</button>
 </div>
 ```
@@ -51,16 +51,17 @@ Consider this HTML:
 And this JavaScript:
 
 ```js
-const div = document.querySelector('#button-container');
-div.addEventListener('click', (event) => {
+const div = document.querySelector("#button-container");
+div.addEventListener("click", (event) => {
   console.log(event.target);
   console.log(event.currentTarget);
 });
 ```
 
-When a user clicks the button, both `event.target` and `event.currentTarget` are logged. Explain what each property represents in this scenario and why they might be different.
+When a user clicks the button, both `event.target` and `event.currentTarget` a re logged. Explain what each property represents in this scenario and why they might be different.
 
 **Your Answer:**
+`event.target` is the actual element that got clicked the specific thing the user interacted with. `event.currentTarget` is whatever element the event listener is attached to. In this scenario, since the listener is on the div but the user clicks the button inside it, `event.target` would log the button element while `event.currentTarget` would log the div. They're different here because of event bubbling the click happens on the button first, then bubbles up to the div where the listener actually lives, but target still remembers where the click originated.
 
 ## Question 3: Creating Elements Dynamically
 
@@ -68,10 +69,10 @@ Look at the JavaScript code below that is attempting to create a product card dy
 
 ```js
 const product = {
-  name: 'iPhone 17',
+  name: "iPhone 17",
   price: 1099.99,
-  img: './images/iphone17.png'
-}
+  img: "./images/iphone17.png",
+};
 
 /* Desired structure: 
 <div>
@@ -81,10 +82,10 @@ const product = {
 </div>
 */
 
-const productCard = document.createElement('div');
-const productImage = document.createElement('img');
-const productName = document.createElement('h3');
-const productPrice = document.createElement('p');
+const productCard = document.createElement("div");
+const productImage = document.createElement("img");
+const productName = document.createElement("h3");
+const productPrice = document.createElement("p");
 
 productImage.src = product.img;
 productName.textContent = product.name;
@@ -97,6 +98,7 @@ However, when the page loads and the code is executed, the user isn't able to se
 
 **Your Answer:**
 
+The **elements** are being created and given their content, but they're never actually attached to `productCard`, `productImage`, `productName`, and `productPrice` are just floating on their own, disconnected from the DOM. The code only appends `productCard` (an empty div) to the body, so nothing inside it ever shows up. To fix it, you'd need to append the child elements to `productCard` before appending `productCard` to the body:
 
 ## Question 4: Event Delegation and event.target.closest()
 
@@ -105,16 +107,16 @@ Consider this HTML:
 ```html
 <ul id="todo-list">
   <li id="todo-1">
-    <p class='description'>Walk the dog</p>
-    <p class='is-complete'>✅</p>
+    <p class="description">Walk the dog</p>
+    <p class="is-complete">✅</p>
   </li>
   <li id="todo-2">
-    <p class='description'>Take out the trash</p>
-    <p class='is-complete'>❌</p>
+    <p class="description">Take out the trash</p>
+    <p class="is-complete">❌</p>
   </li>
   <li id="todo-3">
-    <p class='description'>Wash the dishes</p>
-    <p class='is-complete'>❌</p>
+    <p class="description">Wash the dishes</p>
+    <p class="is-complete">❌</p>
   </li>
 </ul>
 ```
@@ -122,13 +124,13 @@ Consider this HTML:
 And this JavaScript:
 
 ```js
-const todoList = document.querySelector('#todo-list');
-todoList.addEventListener('click', (event) => {
-  const clickedLi = event.target.closest('li');
+const todoList = document.querySelector("#todo-list");
+todoList.addEventListener("click", (event) => {
+  const clickedLi = event.target.closest("li");
 
   if (!clickedLi) return;
 
-  clickedLi.querySelector('.is-complete').textContent = "✅";
+  clickedLi.querySelector(".is-complete").textContent = "✅";
 });
 ```
 
@@ -136,6 +138,7 @@ todoList.addEventListener('click', (event) => {
 2. Explain what the `event.target.closest('li')` method does and why it is essential to this approach.
 
 **Your Answer:**
+This approach is called **event delegation**, where instead of adding a listener to every single <li>, you add one **listener** to the parent <ul> and let clicks bubble up to it. The alternative would be looping through each <li> and attaching a separate listener to each one, which is worse because it doesn't scale well if todos get added dynamically later, those new ones wouldn't have a listener attached unless you remembered to add it every time, whereas the parent listener handles all of them automatically since it's not tied to specific elements. event.`target.closest('li')` finds the nearest <li> ancestor starting from whatever was actually clicked, which matters because someone might click directly on the <p> inside the <li> rather than the <li> itself closest makes sure you're always grabbing the right todo item regardless of which inner element the click landed on.
 
 ## Question 5: NodeList
 
@@ -145,3 +148,6 @@ Do some independent learning and reading about the `querySelectorAll()` method. 
 2. What is the difference between a `NodeList` and an array? Why is it important to know this difference?
 
 **Your Answer:**
+`querySelector()` grabs just the first element that matches a given selector, while `querySelectorAll()` grabs every matching element and returns them all together. You'd use `querySelectorAll()` for something like grabbing every `.todo-item` on a page so you can loop through and do something to each one, instead of only getting the first.
+
+A **NodeList** looks like an array since it's ordered and you can access items by index, but it's not actually an array, it's missing most array methods like `.map()`, `.filter()`, or `.reduce()`. It does have `.forEach()` though, so simple looping still works. This matters because if you try to use an array method directly on a NodeList, it'll throw an error, so you either need to stick to the few methods NodeLists actually support or convert it to a real array first with something like `Array.from()`.

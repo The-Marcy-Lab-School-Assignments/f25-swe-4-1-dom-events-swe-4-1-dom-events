@@ -43,15 +43,25 @@ playlists.forEach((song) => {
   img.alt = `${song.title} playlist cover`;
   name.textContent = `${song.title}`
   li.dataset.title = `${song.title}`
-  li.classList = `playlist-card`
+  li.className = 'playlist-card'
 
   
   li.append(img, name);
   playlistGrid.append(li);
 });
 
+const nowPlayingTitle = document.querySelector('#now-playing-title');
+
 playlistGrid.addEventListener('click', (event) => {
   const card = event.target.closest('li.playlist-card');
 
-  card.classList.toggle(`selected`)
+  if (!card) return;
+
+  const previouslySelected = playlistGrid.querySelector('.playlist-card.selected');
+  if (previouslySelected) {
+    previouslySelected.classList.remove('selected');
+  }
+
+  card.classList.add('selected');
+  nowPlayingTitle.textContent = card.dataset.title;
 });
